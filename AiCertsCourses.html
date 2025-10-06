@@ -486,32 +486,29 @@ document.addEventListener('submit', async (ev) => {
     const payload = {};
     formData.forEach((val, key) => payload[key] = val);
 
-    try {
-      const res = await fetch('/wp-json/aicerts/v1/enroll', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+    // Replace server POST with this call to our sendEmail microservice:
+try {
+  const res = await fetch('/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    // payload is the same 'payload' you already built in the code above
+    body: JSON.stringify(payload)
+  });
 
-      if(!res.ok) {
-        // fallback: show error and suggest email fallback
-        throw new Error('Server error');
-      }
-      const data = await res.json();
-      if(data && data.success) {
-        statusEl.style.color = '#145b63';
-        statusEl.innerText = 'Application submitted ✅ We will contact you shortly.';
-        form.reset();
-        // repopulate hidden fields (course details)
-        populateEnrollForm({ id: payload.courseId, title: payload.courseTitle });
-      } else {
-        throw new Error(data.message || 'Unknown response');
-      }
-    } catch (err) {
-      console.error(err);
-      statusEl.style.color = '#b23a3a';
-      statusEl.innerHTML = 'Submission failed. Please <a href="mailto:hello@yourdomain.com?subject=Course application&body=' + encodeURIComponent(JSON.stringify(payload)) + '">email us</a> or try again later.';
-    }
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to submit');
+
+  statusEl.style.color = '#145b63';
+  statusEl.innerText = 'Application submitted ✅ We will contact you shortly.';
+  form.reset();
+  // repopulate hidden fields (course details)
+  populateEnrollForm({ id: payload.courseId, title: payload.courseTitle });
+} catch (err) {
+  console.error(err);
+  statusEl.style.color = '#b23a3a';
+  statusEl.innerHTML = 'Submission failed. Please <a href="mailto:hello@yourdomain.com?subject=Course application&body=' + encodeURIComponent(JSON.stringify(payload)) + '">email us</a> or try again later.';
+}
+
   }
 });
 
