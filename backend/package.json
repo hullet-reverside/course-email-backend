@@ -1,19 +1,16 @@
 {
-  "name": "aicertsitergration",
+  "name": "course-email-backend",
   "version": "1.0.0",
-  "description": "",
+  "type": "module",
   "main": "sendEmail.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node sendEmail.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "axios": "^1.12.2",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "@sendinblue/client": "^8.6.0",
+    "body-parser": "^1.20.2"
   }
 }
+
