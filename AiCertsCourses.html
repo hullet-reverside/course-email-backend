@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Course Detail</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background: #f9f9f9;
+}
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+/* HERO */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px 40px 20px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+  position: relative;
+}
+.hero img { max-width: 300px; margin-bottom: 20px; }
+.hero h1 { font-size: 28px; margin-bottom: 10px; color: #2c3e50; }
+.hero p { font-size: 16px; color: #555; margin-bottom: 20px; }
+.hero button {
+  background: linear-gradient(to right, #3ec9d6, #257a9e);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+/* STICKY CTA */
+.sticky-cta {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(to right, #3ec9d6, #257a9e);
+  color: #fff;
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 999;
+  transition: all 0.2s ease;
+}
+.sticky-cta:hover { transform: translateY(-2px); background: linear-gradient(to right, #2fa9b0, #1f5f7a); }
+
+/* OVERVIEW CARDS */
+.overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 40px;
+}
+.overview-card {
+  background: #f2f2f2; /* light grey background */
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: left;
+}
+.overview-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #2980b9;
+  font-size: 16px; 
+  display: block; /* heading above text */
+}
+.overview-card p, .overview-card ul, .overview-card li {
+  margin: 0;
+  font-size: 14px !important;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* MODULES ACCORDION */
+.modules {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+}
+.module { border-bottom: 1px solid #eee; position: relative; padding-left: 20px; }
+.module:last-child { border-bottom: none; }
+.module-header {
+  cursor: pointer;
+  padding: 14px 0;
+  font-size: 16px; /* slightly smaller heading */
+  color: #2c3e50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.module-header span { font-size: 20px; transition: transform 0.2s ease; }
+.module-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  font-size: 15px; /* slightly bigger text inside */
+  color: #555;
+  padding-bottom: 0;
+}
+.module.open .module-content { padding-top: 10px; max-height: 1200px; }
+.module.open .module-header span { transform: rotate(45deg); }
+
+/* Progress tracker dots */
+.module-progress {
+  position: absolute;
+  left: -12px; /* bring dot slightly into view */
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.module-progress span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ccc;
+  transition: background 0.2s ease;
+}
+.module.open .module-progress span { background: #3ec9d6; }
+
+/* AI TOOLS */
+.tools-section { margin-bottom: 40px; }
+.tools-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px 0;
+}
+.tools-scroll::-webkit-scrollbar { height: 6px; }
+.tools-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+.tool-card {
+  min-width: 160px;
+  background: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.tool-card img { max-width: 60px; margin-bottom: 8px; }
+.tool-card p { font-size: 13px; color: #555; margin: 0; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 24px; }
+  .hero p { font-size: 14px; }
+  .hero img { max-width: 200px; }
+  .overview-card h3 { font-size: 14px; }
+  .overview-card p { font-size: 12px; }
+  .module-header { font-size: 15px; }
+  .module-content { font-size: 14px; }
+}
+	
+	.tools-section h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #2c3e50;
+}
+
+.tools-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 0;
+}
+.tools-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.tools-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
+.tool-card {
+  min-width: 140px;
+  background: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+  flex-shrink: 0;
+}
+.tool-card img {
+  max-width: 60px;
+  margin-bottom: 8px;
+}
+.tool-card p {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+.enroll-section {
+  max-width: 920px;
+  margin: 40px auto 80px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 8px 30px rgba(20,30,45,0.04);
+  font-family: 'Poppins', sans-serif;
+}
+.enroll-header { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+.enroll-header h2 { margin:0; font-size:20px; color:#163a4a; }
+.enroll-sub { color:#6b7280; font-size:14px; margin-bottom:18px; }
+
+.enroll-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap:12px;
+}
+.input, textarea, select {
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e6eef2;
+  background:#fbfeff;
+  font-size:14px;
+  color:#123;
+  box-sizing: border-box;
+}
+textarea { min-height:110px; resize:vertical; }
+
+.form-row { display:flex; gap:12px; }
+.form-actions { display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+
+.btn-primary {
+  background: linear-gradient(90deg,#3ec9d6,#257a9e);
+  color:#fff; padding:10px 16px; border-radius:10px; border:none; cursor:pointer; font-weight:600;
+  box-shadow: 0 8px 20px rgba(15,50,70,0.08);
+}
+.btn-secondary { background:transparent; border:1px solid #e1eef3; padding:9px 14px; border-radius:10px; cursor:pointer; color:#145b63; }
+
+.small-note { font-size:12px; color:#667085; }
+
+.form-status { margin-left:8px; font-size:14px; color:#145b63; }
+
+.hidden { display:none!important; }
+
+/* Responsive tighten styling */
+@media (max-width:640px){
+  .enroll-grid{ grid-template-columns: 1fr; }
+}
+
+</style>
+
+</head>
+<body>
+<div class="container">
+  <!-- HERO SECTION -->
+  <div class="hero" id="hero">
+    <img src="" alt="Course Image" id="courseImage">
+    <h1 id="courseTitle"></h1>
+    <p id="courseTagline"></p>
+    <button id="enrollBtn">Get Certified</button>
+  </div>
+
+  <!-- OVERVIEW SECTION -->
+  <div class="overview" id="overview">
+    <!-- Cards will be injected here -->
+  </div>
+
+  <!-- MODULES SECTION -->
+  <div class="modules" id="modules">
+    <!-- Accordion modules will be injected here -->
+  </div>
+
+<!-- AI TOOLS SECTION -->
+<div class="tools-section" id="toolsSection">
+  <h2>AI Tools</h2>
+  <div class="tools-scroll" id="toolsScroll">
+    <!-- Tool cards will be injected here -->
+  </div>
+</div>
+</div>
+
+<section id="enrollForm" class="enroll-section" aria-labelledby="enrollTitle">
+  <div class="enroll-header">
+    <h2 id="enrollTitle">Apply for this course</h2>
+    <div class="enroll-sub" id="enrollCourseName">Course: —</div>
+  </div>
+  <div class="enroll-sub">Complete the form below to register your interest. We’ll contact you with next steps.</div>
+
+  <form id="courseEnrollmentForm" novalidate>
+    <div class="enroll-grid">
+      <input class="input" id="firstName" name="firstName" placeholder="First name *" required>
+      <input class="input" id="lastName" name="lastName" placeholder="Last name *" required>
+
+      <input class="input" id="email" name="email" type="email" placeholder="Email address *" required>
+      <input class="input" id="phone" name="phone" placeholder="Phone (WhatsApp preferred)">
+
+      <input class="input" id="company" name="company" placeholder="Company / Organisation">
+      <input class="input" id="jobTitle" name="jobTitle" placeholder="Job title / Role">
+
+      <select class="input" id="mode" name="mode">
+        <option value="">Preferred mode</option>
+        <option value="Instructor-Led">Instructor-Led</option>
+        <option value="Self-Paced">Self-Paced</option>
+        <option value="Blended">Blended</option>
+      </select>
+
+      <input class="input" id="startDate" name="startDate" type="date" placeholder="Preferred start date">
+      <select class="input" id="experienceLevel" name="experienceLevel">
+        <option value="">Experience level</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+    </div>
+
+    <div style="margin-top:12px;">
+      <textarea id="message" name="message" placeholder="Anything else we should know? (optional)"></textarea>
+    </div>
+
+    <!-- hidden course fields populated by JS -->
+    <input type="hidden" id="hiddenCourseId" name="courseId" value="">
+    <input type="hidden" id="hiddenCourseTitle" name="courseTitle" value="">
+    <input type="hidden" id="hiddenCourseUrl" name="courseUrl" value="">
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary" id="submitEnroll">Submit application</button>
+      <button type="button" class="btn-secondary" id="clearForm">Clear</button>
+      <div class="small-note">We respect your privacy. By submitting you agree to our <a href="/privacy-policy" target="_blank">privacy policy</a>.</div>
+      <div id="formStatus" class="form-status" aria-live="polite"></div>
+    </div>
+  </form>
+</section>
+
+<script>
+async function loadCourseDetails(courseId) {
+  try {
+    const res = await fetch(`https://www.aicerts.ai/wp-json/aicerts-api/v1/course/${courseId}`);
+    const json = await res.json();
+    if(!json.success) throw new Error('Failed to load course data');
+    const course = json.data;
+
+    // HERO
+    document.getElementById('courseImage').src = course.feature_image_url;
+    document.getElementById('courseTitle').innerText = course.title;
+    document.getElementById('courseTagline').innerText = course.course_tagline || "";
+
+   // document.getElementById('enrollBtn').onclick = () => {
+   //    window.location.href = `/enroll?courseId=${course.id}`; 
+   // }
+
+    // OVERVIEW
+    const overviewContainer = document.getElementById('overview');
+    overviewContainer.innerHTML = `
+      <div class="overview-card">
+        <h3>Included</h3>
+        <p>${course.certificate_overview.included_items}</p>
+      </div>
+      <div class="overview-card">
+        <h3>Duration</h3>
+        <div>${course.certificate_overview.certificate_duration}</div>
+      </div>
+      <div class="overview-card">
+        <h3>Prerequisites</h3>
+        <p>${course.certificate_overview.prerequisites}</p>
+      </div>
+      <div class="overview-card">
+        <h3>Exam Format</h3>
+        <p>${course.certificate_overview.exam_format}</p>
+      </div>
+    `;
+
+    // MODULES
+    const modulesContainer = document.getElementById('modules');
+    modulesContainer.innerHTML = course.certification_modules.map((mod, idx) => `
+      <div class="module">
+        <div class="module-header">${mod.certification_module_title} <span>+</span></div>
+        <div class="module-content">${mod.certification_module_description}</div>
+      </div>
+    `).join("");
+
+    // ADD ACCORDION FUNCTIONALITY
+    document.querySelectorAll('.module-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const module = header.parentElement;
+        module.classList.toggle('open');
+      });
+    });
+
+    // AI TOOLS
+const toolsContainer = document.getElementById('toolsScroll');
+if(course.ai_tools && course.ai_tools.length > 0) {
+  toolsContainer.innerHTML = course.ai_tools.map(tool => `
+    <div class="tool-card">
+      ${tool.image_url ? `<img src="${tool.image_url}" alt="${tool.name}">` : ''}
+      <p>${tool.name}</p>
+    </div>
+  `).join("");
+} else {
+  toolsContainer.innerHTML = '<p style="color:#777;">No AI tools listed for this course.</p>';
+}
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('hero').innerHTML = `<p style="color:red;">Failed to load course details</p>`;
+  }
+
+function scrollToEnrollForm() {
+  const el = document.getElementById('enrollForm');
+  if(!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // focus first input after a short delay
+  setTimeout(()=> document.getElementById('firstName')?.focus(), 550);
+}
+
+/* 2) Populate hidden course fields (call from loadCourseDetails after you load the course) */
+function populateEnrollForm(course) {
+  if(!course) return;
+  document.getElementById('hiddenCourseId').value = course.id || '';
+  document.getElementById('hiddenCourseTitle').value = course.title || '';
+  document.getElementById('hiddenCourseUrl').value = window.location.href;
+  document.getElementById('enrollCourseName').innerText = `Course: ${course.title || '—'}`;
+}
+
+/* 3) Wire CTA buttons to scroll (replace earlier redirect behavior)
+   - Update both stickyEnroll and hero/enrollBtn (if present)
+*/
+function bindCTAToForm() {
+  const sticky = document.getElementById('stickyEnroll');
+  const heroBtn = document.getElementById('enrollBtn');
+  [sticky, heroBtn].forEach(btn => {
+    if(!btn) return;
+    btn.removeAttribute('onclick'); // remove previous handlers
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      scrollToEnrollForm();
+    });
+  });
+}
+
+/* 4) Client-side validation helper */
+function validateEnrollForm(formData) {
+  const errors = [];
+  if(!formData.get('firstName')?.trim()) errors.push('First name is required');
+  if(!formData.get('lastName')?.trim()) errors.push('Last name is required');
+  const email = (formData.get('email') || '').trim();
+  if(!email) errors.push('Email is required');
+  else {
+    // simple email regex
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!re.test(email)) errors.push('Enter a valid email address');
+  }
+  return errors;
+}
+
+/* 5) Submit handler - posts to WP REST endpoint /wp-json/aicerts/v1/enroll (example)
+     - You can change the endpoint to your preferred handler (Formspree, Zapier, plugin)
+*/
+document.addEventListener('submit', async (ev) => {
+  if(ev.target && ev.target.id === 'courseEnrollmentForm') {
+    ev.preventDefault();
+    const statusEl = document.getElementById('formStatus');
+    statusEl.style.color = '#145b63';
+    statusEl.innerText = 'Submitting...';
+
+    const form = ev.target;
+    const formData = new FormData(form);
+    const errors = validateEnrollForm(formData);
+    if(errors.length) {
+      statusEl.style.color = '#b23a3a';
+      statusEl.innerText = errors.join('; ');
+      return;
+    }
+
+    // Build JSON payload
+    const payload = {};
+    formData.forEach((val, key) => payload[key] = val);
+
+    try {
+      const res = await fetch('/wp-json/aicerts/v1/enroll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if(!res.ok) {
+        // fallback: show error and suggest email fallback
+        throw new Error('Server error');
+      }
+      const data = await res.json();
+      if(data && data.success) {
+        statusEl.style.color = '#145b63';
+        statusEl.innerText = 'Application submitted ✅ We will contact you shortly.';
+        form.reset();
+        // repopulate hidden fields (course details)
+        populateEnrollForm({ id: payload.courseId, title: payload.courseTitle });
+      } else {
+        throw new Error(data.message || 'Unknown response');
+      }
+    } catch (err) {
+      console.error(err);
+      statusEl.style.color = '#b23a3a';
+      statusEl.innerHTML = 'Submission failed. Please <a href="mailto:hello@yourdomain.com?subject=Course application&body=' + encodeURIComponent(JSON.stringify(payload)) + '">email us</a> or try again later.';
+    }
+  }
+});
+
+/* Clear form button */
+document.getElementById('clearForm')?.addEventListener('click', () => {
+  document.getElementById('courseEnrollmentForm')?.reset();
+});
+
+/* ensure CTA binds after page ready */
+document.addEventListener('DOMContentLoaded', () => bindCTAToForm());
+ 
+populateEnrollForm(course);   // <<--- add this
+bindCTAToForm();
+ 
+}
+
+// Example: dynamically get courseId from URL query string
+const urlParams = new URLSearchParams(window.location.search);
+const courseId = urlParams.get('courseId') || 31194; // fallback for testing
+loadCourseDetails(courseId);
+	
+
+
+	
+</script>
+
+<button id="stickyEnroll" class="sticky-cta">Get Certified</button>
+
+</body>
+</html>

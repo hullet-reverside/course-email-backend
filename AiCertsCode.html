@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Certs Catalog</title>
+  <style>
+   #ai-certs h1 {
+      text-align: center !important;
+      margin-bottom: 20px !important;
+      font-size: 28px !important;
+      color: #34495e !important;
+    }
+
+    .search-box {
+      max-width: 600px !important;
+      margin: 0 auto 30px auto !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+
+    .search-box input {
+      width: 100% !important;
+      padding: 12px 16px !important;
+      border: 1px solid #ccc !important;
+      border-radius: 10px !important;
+      font-size: 16px !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .grid {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      margin: 0 auto !important;
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+      gap: 20px !important;
+      clear: both !important;
+      overflow: visible !important;
+    }
+
+    .card {
+      background: #fff !important;
+      border-radius: 14px !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+      padding: 20px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      text-align: left !important;
+      position: relative !important;
+    }
+
+    .card .view-course-details-btn {
+      margin-top: auto !important;
+    }
+
+    .card:hover {
+      transform: translateY(-5px) !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .card-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
+
+    .card-header h2 {
+      font-size: 18px !important;
+      margin: 0 !important;
+      color: #2980b9 !important;
+    }
+
+    .badge {
+      max-width: 80px !important;
+      border-radius: 8px !important;
+      border: 1px solid #eee !important;
+    }
+
+    .card-info {
+      margin-top: 15px !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+    }
+
+    .card-info .desc {
+      margin-top: 15px !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+    }
+
+    .card-info p {
+      margin: 6px 0 !important;
+      font-size: 14px !important;
+    }
+
+    .back-btn {
+      background: linear-gradient(to bottom, #3ec9d6, #257a9e) !important;
+      color: #fff !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 10px 16px !important;
+      margin-bottom: 20px !important;
+      cursor: pointer !important;
+      font-size: 16px !important;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(to bottom, #3ec9d6, #257a9e) !important;
+    }
+
+    .view-courses-btn,
+    .view-course-details-btn {
+      background: linear-gradient(to bottom, #3ec9d6, #257a9e) !important;
+      color: #fff !important;
+      font-family: Arial, sans-serif !important;
+      font-size: 16px !important;
+      padding: 8px 20px !important;
+      border: none !important;
+      border-radius: 6px !important;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2) !important;
+      cursor: pointer !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+    }
+
+    .view-courses-btn:hover,
+    .view-course-details-btn:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25) !important;
+      background: linear-gradient(to bottom, #2fa9b0, #1f5f7a) !important;
+    }
+
+    /* CATEGORIES HORIZONTAL SCROLL */
+    .categories-wrapper {
+      margin: 20px 0 !important;
+      overflow-x: auto !important;
+      display: flex !important;
+      gap: 20px !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding: 30px 10px 10px 10px !important;
+    }
+
+    .categories-wrapper::-webkit-scrollbar {
+      height: 8px !important;
+    }
+
+    .categories-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2) !important;
+      border-radius: 10px !important;
+    }
+
+    .category-card {
+      flex: 0 0 auto !important;
+      min-width: 260px !important;
+      max-width: 280px !important;
+      scroll-snap-align: start !important;
+      background: rgba(255, 255, 255, 0.75) !important;
+      backdrop-filter: blur(10px) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+      padding: 20px !important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+      cursor: pointer !important;
+    }
+
+    .category-card:hover {
+      transform: translateY(-6px) scale(1.02) !important;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .category-card h2 {
+      font-size: 18px !important;
+      margin: 0 0 10px 0 !important;
+      color: #2c3e50 !important;
+    }
+
+    .category-card p {
+      font-size: 14px !important;
+      color: #555 !important;
+    }
+
+    .category-card button {
+      background: linear-gradient(to bottom, #3ec9d6, #257a9e) !important;
+      color: #fff !important;
+      font-family: Arial, sans-serif !important;
+      font-size: 16px !important;
+      padding: 8px 20px !important;
+      border: none !important;
+      border-radius: 6px !important;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2) !important;
+      cursor: pointer !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+    }
+
+    .category-card button:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.25) !important;
+      background: linear-gradient(to bottom, #2fa9b0, #1f5f7a) !important;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- <h1>AI Certificates Catalog</h1> -->
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search certificates by name, code, or tool...">
+  </div>
+
+  <!-- Categories container -->
+  <div class="categories-wrapper" id="categoriesContainer">
+    <!-- Category cards injected here -->
+  </div>
+
+  <!-- Courses container -->
+  <div class="grid hidden" id="coursesContainer">
+    <!-- Course cards injected here -->
+  </div>
+
+  <script>
+    let allCourses = [];
+    let categories = []; // will store [norm, display]
+
+    function adjustContainerHeight() {
+      const codeModule = document.querySelector('.et_pb_code_inner');
+      if (codeModule) {
+        codeModule.style.height = "auto";
+      }
+    }
+
+    async function getAllCertificates() {
+      const response = await fetch("https://www.aicerts.ai/wp-json/aicerts-api/v1/courses?page=1&per_page=100");
+      if (!response.ok) throw new Error("Failed to fetch certificates");
+      return await response.json();
+    }
+
+    function getCategoryDescriptions(category) {
+      const descriptions = {
+        "Machine Learning": "Dive into the foundations of AI with courses covering supervised learning, unsupervised techniques, deep learning, neural networks, and real-world applications such as recommendation engines and predictive analytics.",
+        "Data Science": "Gain the skills to work with data at scale. Courses cover statistical analysis, data visualization, data wrangling, and predictive modeling using tools like Python, R, and SQL to turn raw data into actionable insights.",
+        "AI Ethics": "Understand the critical issues around fairness, transparency, bias, accountability, and governance in artificial intelligence. Learn best practices for designing and deploying responsible AI systems.",
+        "NLP": "Explore the world of natural language processing, from sentiment analysis to chatbots. Courses cover language modeling, text mining, and advanced applications like transformers and large language models.",
+        "Computer Vision": "Learn how machines interpret images and video. Courses include object detection, image classification, facial recognition, and applications across healthcare, retail, and autonomous systems."
+      };
+      return descriptions[category] || ("Explore specialized courses under " + category + ".");
+    }
+
+    function normalizeCategory(cat) {
+      if (!cat) return "";
+      return cat.replace(/&amp;/g, "&").trim().toLowerCase();
+    }
+
+    async function renderCategories() {
+      const categoriesContainer = document.getElementById("categoriesContainer");
+      const coursesContainer = document.getElementById("coursesContainer");
+
+      categoriesContainer.classList.remove("hidden");
+      coursesContainer.classList.add("hidden");
+
+      categoriesContainer.innerHTML = '<div style="width: 100%; text-align: center;"><p>Loading categories...</p></div>';
+
+      const response = await getAllCertificates();
+      allCourses = Array.isArray(response) ? response : response.data || [];
+
+      // whitelist of categories to show
+const allowedCategories = [
+  "ai essentials",
+  "ai business",
+  "ai security",
+  "ai cloud",
+  "ai development",
+  "ai specialization",
+  "ai data & robotics",
+  "ai learning & education",
+  "ai design & creative"
+  //"blockchain & bitcoin"
+];
+
+
+      const catMap = new Map();
+      allCourses.forEach(cert => (cert.categories || []).forEach(cat => {
+  const decoded = cat.replace(/&amp;/g, "&").trim();
+  const norm = normalizeCategory(cat);
+  if (allowedCategories.includes(norm) && !catMap.has(norm)) {
+    catMap.set(norm, decoded);
+  }
+}));
+
+
+
+      categories = Array.from(catMap.entries());
+
+      const catCards = categories.map(([norm, display]) => `
+        <div class="card category-card" data-category="${norm}">
+          <div class="card-header">
+            <h2>${display}</h2>
+          </div>
+          <div class="card-info">
+            <p>${getCategoryDescriptions(display)}</p>
+            <button class="view-courses-btn" data-category="${norm}">View Courses</button>
+          </div>
+        </div>
+      `);
+
+      categoriesContainer.innerHTML = catCards.join("");
+
+      document.querySelectorAll(".view-courses-btn").forEach(btn => {
+        btn.addEventListener("click", () => renderCoursesByCategory(btn.dataset.category));
+      });
+
+      adjustContainerHeight();
+    }
+
+  function renderCoursesByCategory(normCategory) {
+  const categoriesContainer = document.getElementById("categoriesContainer");
+  const coursesContainer = document.getElementById("coursesContainer");
+
+  categoriesContainer.classList.add("hidden");
+  coursesContainer.classList.remove("hidden");
+
+  coursesContainer.innerHTML = '<div style="width: 100%; text-align: center;"><p>Loading courses...</p></div>';
+
+  const allowedCourses = {
+    "ai essentials": [
+      "AI+ Foundation™",
+      "AI+ Executive™",
+      "AI+ Prompt Engineer  Level 1™",
+      "AI+ Everyone™"
+    ],
+    "ai business": [
+      "AI+ Chief AI Officer™",
+      "AI+ Ethics™",
+      "AI+ Project Manager™",
+      "AI+ Marketing™",
+      "AI+ Sales™",
+      "AI+ Finance™"
+
+
+    ],
+    "ai security": [
+      "AI+ Security Level 1™",
+      "AI+ Security Level 2™",
+      "AI+ Security Level 3™",
+      "AI+ Security Compliance™",
+      "AI+ Network™"
+    ],
+    "ai cloud": [
+      "AI+ Cloud™"
+    ],
+    "ai development": [
+      "AI+ Engineer™",
+      "AI+ Developer™",
+      "AI+ Prompt Engineer Level 2™",
+    ],
+    "ai specialization": [
+      "AI+ Telecommunications™"
+    ],
+    "ai data & robotics": [
+      "AI+ Quality Assurance™",
+      "AI+ Business Intelligence™",
+      "AI+ Data™",
+    ],
+    "ai learning & education": [
+      "AI+ Educator™",
+      "AI+ Learning &#038; Development™"
+    ],
+    "ai design & creative": [
+      "AI+ UX Designer™",
+      "AI+ Design™"
+    ]
+  };
+
+  // filter courses by category
+  let filtered = allCourses.filter(cert =>
+    (cert.categories || []).some(cat => normalizeCategory(cat) === normCategory)
+  );
+
+  // only keep whitelisted courses for this category
+  const allowed = allowedCourses[normCategory] || [];
+  filtered = filtered.filter(cert => allowed.includes(cert.title));
+
+  const courseCards = filtered.map(cert => `
+    <div class="card">
+      <div class="card-header">
+        <h2>${cert.title}</h2>
+        ${cert.certificate_badge_url ? `<img src="${cert.certificate_badge_url}" class="badge">` : ""}
+      </div>
+      <div class="card-info">
+        <p><strong>Categories:</strong> ${(cert.categories || []).map(c => c.replace(/&amp;/g, "&")).join(", ")}</p>
+        <h4 class="desc">Description:</h4>
+        <div>${cert.description || "No description available."}</div>
+      </div>
+      <button class="view-course-details-btn" onclick="goToCourseDetails(${cert.id})">Get Certified</button>
+    </div>
+  `);
+
+  coursesContainer.innerHTML = `
+    <button class="back-btn" onclick="renderCategories()">⬅ Back to Categories</button>
+    ${courseCards.join("")}
+  `;
+}
+
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+      const query = this.value.toLowerCase();
+      const cards = document.querySelectorAll(".card");
+      cards.forEach(card => {
+        const title = card.getAttribute("data-title") || "";
+        const code = card.getAttribute("data-code") || "";
+        const tools = card.getAttribute("data-tools") || "";
+        const category = card.getAttribute("data-category") || "";
+        if (
+          title.includes(query) ||
+          code.includes(query) ||
+          tools.includes(query) ||
+          category.toLowerCase().includes(query)
+        ) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+
+    renderCategories();
+
+    function goToCourseDetails(courseId) {
+      window.location.href = `/coursedetailspage/?courseId=${courseId}`;
+    }
+  </script>
+</body>
+</html>
