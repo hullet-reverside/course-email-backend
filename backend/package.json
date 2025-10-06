@@ -1,16 +1,18 @@
 {
-  "name": "course-email-backend",
+  "name": "aicertsitergration",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Send course enrollment emails via Brevo",
   "main": "sendEmail.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "node sendEmail.js"
+    "start": "node sendEmail.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "dotenv": "^16.3.1",
-    "@sendinblue/client": "^8.6.0",
-    "body-parser": "^1.20.2"
+    "axios": "^1.12.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
   }
 }
 

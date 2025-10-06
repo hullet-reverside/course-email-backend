@@ -1,16 +1,4 @@
-/**
- * sendEmail.js
- * Simple Express server that accepts course enrollment form JSON and
- * sends two emails via Brevo:
- *  - Admin email to ADMIN_EMAIL (hulletmatjiu@gmail.com)
- *  - Thank-you email to the form submitter
- *
- * Usage:
- * 1. npm init -y
- * 2. npm i express axios cors dotenv
- * 3. create a .env (example below)
- * 4. node sendEmail.js
- */
+
 
 const express = require('express');
 const axios = require('../node_modules/axios/index.d.cts');
@@ -21,12 +9,6 @@ const app = express();
 app.use(cors()); // adjust origin in production
 app.use(express.json({ limit: '1mb' }));
 
-// Required env vars:
-// BREVO_API_KEY - your Brevo API key
-// SENDER_EMAIL - the verified sender email in Brevo (e.g. no-reply@yourdomain.com)
-// SENDER_NAME  - friendly sender name (e.g. "AI Certs")
-// ADMIN_EMAIL  - hulletmatjiu@gmail.com (default used when not set)
-// PORT         - port (default 5000)
 
 const BREVO_API = 'https://api.brevo.com/v3/smtp/email';
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
