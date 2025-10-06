@@ -208,7 +208,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .enroll-section {
-  max-width: 920px;
+  max-width: 1200px;
   margin: 40px auto 80px;
   background: #fff;
   border-radius: 14px;
@@ -409,6 +409,8 @@ if(course.ai_tools && course.ai_tools.length > 0) {
 } else {
   toolsContainer.innerHTML = '<p style="color:#777;">No AI tools listed for this course.</p>';
 }
+	  
+	  populateEnrollForm(course); 
 
   } catch (err) {
     console.error(err);
@@ -467,7 +469,7 @@ function validateEnrollForm(formData) {
      - You can change the endpoint to your preferred handler (Formspree, Zapier, plugin)
 */
 document.addEventListener('submit', async (ev) => {
-  if(ev.target && ev.target.id === 'courseEnrollmentForm') {
+  if (ev.target && ev.target.id === 'courseEnrollmentForm') {
     ev.preventDefault();
     const statusEl = document.getElementById('formStatus');
     statusEl.style.color = '#145b63';
@@ -476,7 +478,7 @@ document.addEventListener('submit', async (ev) => {
     const form = ev.target;
     const formData = new FormData(form);
     const errors = validateEnrollForm(formData);
-    if(errors.length) {
+    if (errors.length) {
       statusEl.style.color = '#b23a3a';
       statusEl.innerText = errors.join('; ');
       return;
@@ -484,33 +486,36 @@ document.addEventListener('submit', async (ev) => {
 
     // Build JSON payload
     const payload = {};
-    formData.forEach((val, key) => payload[key] = val);
+    formData.forEach((val, key) => (payload[key] = val));
 
-    // Replace server POST with this call to our sendEmail microservice:
-try {
-  const res = await fetch('/send-email', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    // payload is the same 'payload' you already built in the code above
-    body: JSON.stringify(payload)
-  });
+    try {
+      const res = await fetch('https://course-email-backend-1.onrender.com/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to submit');
+      const data = await res.json();
 
-  statusEl.style.color = '#145b63';
-  statusEl.innerText = 'Application submitted ✅ We will contact you shortly.';
-  form.reset();
-  // repopulate hidden fields (course details)
-  populateEnrollForm({ id: payload.courseId, title: payload.courseTitle });
-} catch (err) {
-  console.error(err);
-  statusEl.style.color = '#b23a3a';
-  statusEl.innerHTML = 'Submission failed. Please <a href="mailto:hello@yourdomain.com?subject=Course application&body=' + encodeURIComponent(JSON.stringify(payload)) + '">email us</a> or try again later.';
-}
-
+      if (res.ok && data.success) {
+        statusEl.style.color = '#145b63';
+        statusEl.innerText = '✅ Application submitted successfully! Check your inbox.';
+        form.reset();
+        populateEnrollForm({ id: payload.courseId, title: payload.courseTitle });
+      } else {
+        throw new Error(data.message || 'Failed to send email');
+      }
+    } catch (err) {
+      console.error('Submit error:', err);
+      statusEl.style.color = '#b23a3a';
+      statusEl.innerHTML =
+        'Submission failed 😞. Please <a href="mailto:hulletmatjiu@gmail.com?subject=Course Application&body=' +
+        encodeURIComponent(JSON.stringify(payload, null, 2)) +
+        '">email us</a> directly.';
+    }
   }
 });
+
 
 /* Clear form button */
 document.getElementById('clearForm')?.addEventListener('click', () => {
@@ -520,7 +525,7 @@ document.getElementById('clearForm')?.addEventListener('click', () => {
 /* ensure CTA binds after page ready */
 document.addEventListener('DOMContentLoaded', () => bindCTAToForm());
  
-populateEnrollForm(course);   // <<--- add this
+ 
 bindCTAToForm();
  
 }
@@ -535,7 +540,6 @@ loadCourseDetails(courseId);
 	
 </script>
 
-<button id="stickyEnroll" class="sticky-cta">Get Certified</button>
 
 </body>
 </html>

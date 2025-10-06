@@ -98,29 +98,53 @@ function thankYouHtml(data){
   const { firstName, courseTitle, courseUrl } = data;
   return `
   <!doctype html>
-  <html>
-  <head><meta name="viewport" content="width=device-width, initial-scale=1.0"/></head>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
   <body style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:20px;background:#f5f7fb;">
     <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-      <tr><td align="center">
-        <table width="700" style="max-width:700px;background:#ffffff;border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(20,30,45,0.04);">
-          <tr>
-            <td>
-              <h2 style="margin:0 0 6px 0;color:#0f3b4a">Thanks for your application, ${escapeHtml(firstName || '')} 👋</h2>
-              <p style="margin:0 0 12px 0;color:#566277">We’ve received your application for <strong>${escapeHtml(courseTitle || 'the course')}</strong>. One of our team members will reach out with next steps within 1–2 business days.</p>
+      <tr>
+        <td align="center">
+          <table width="700" style="max-width:700px;background:#ffffff;border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(20,30,45,0.04);">
+            <!-- LOGO SECTION -->
+            <tr>
+              <td align="center" style="padding-bottom:20px;">
+                <img src="https://geeks4learning.com/wp-content/uploads/2024/11/Geeks4Learning-Logo-with-Slogan-Blue-03.png" alt="AI Certs Logo" width="150" style="max-width:150px;display:block;">
+              </td>
+            </tr>
 
-              <div style="margin:14px 0;">
-                <a href="${escapeHtml(courseUrl || '#')}" style="padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,#3ec9d6,#257a9e);color:#fff;text-decoration:none;font-weight:600;display:inline-block">View course details</a>
-              </div>
+            <!-- MAIN CONTENT -->
+            <tr>
+              <td>
+                <h2 style="margin:0 0 6px 0;color:#0f3b4a;">
+                  Thanks for your application, ${escapeHtml(firstName || '')} 👋
+                </h2>
+                <p style="margin:0 0 12px 0;color:#566277;">
+                  We’ve received your application for 
+                  <strong>${escapeHtml(courseTitle || 'the course')}</strong>. 
+                  One of our team members will reach out with next steps within 1–2 business days.
+                </p>
 
-              <p style="margin:6px 0 0 0;color:#94a3b8;font-size:13px">If you need immediate help, reply to this email or call us on our support number.</p>
-            </td>
-          </tr>
-        </table>
-      </td></tr>
+                <div style="margin:14px 0;">
+                  <a href="${escapeHtml(courseUrl || '#')}" 
+                    style="padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,#3ec9d6,#257a9e);
+                    color:#fff;text-decoration:none;font-weight:600;display:inline-block">
+                    View course details
+                  </a>
+                </div>
+
+                <p style="margin:6px 0 0 0;color:#94a3b8;font-size:13px;">
+                  If you need immediate help, reply to this email or call us on our support number.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
     </table>
   </body>
-  </html>
+</html>
   `;
 }
 
