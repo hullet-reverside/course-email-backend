@@ -14,7 +14,7 @@ const SENDER_EMAIL = process.env.SENDER_EMAIL || 'no-reply@yourdomain.com';
 const SENDER_NAME = process.env.SENDER_NAME || 'Course Enrollments';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'sales@geeks4learning.com';
 const PORT = process.env.PORT || 5000;
-const BCC_EMAIL = process.env.BCC_EMAIL || 'hulletmatjiu@gmail.com';
+const BCC_EMAIL = process.env.BCC_EMAIL || 'chris@ileadetal.co.za';
 
 if(!BREVO_API_KEY) {
   console.error('Missing BREVO_API_KEY in environment. Put it in .env or env vars.');
